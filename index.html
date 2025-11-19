@@ -35,11 +35,19 @@
         .glow-text {
             text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
         }
+        .sponsor-logo {
+            filter: grayscale(100%) brightness(200%); /* Makes logos white/bright to fit theme */
+            transition: all 0.3s ease;
+        }
+        .sponsor-card:hover .sponsor-logo {
+            filter: grayscale(0%) brightness(100%); /* Original color on hover if image had color, or just bright */
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <div class="container mx-auto max-w-4xl p-6 flex-grow z-10 relative">
+    <div class="container mx-auto max-w-5xl p-6 flex-grow z-10 relative">
 
         <!-- Header -->
         <header class="text-center mb-12 animate-fade-in-down">
@@ -51,35 +59,116 @@
             </h2>
         </header>
 
-        <!-- Messages Section -->
+        <!-- General Messages Section -->
         <div class="grid md:grid-cols-2 gap-6 mb-12">
             
             <!-- Attendees Card -->
-            <div class="glass-card p-8 rounded-2xl text-center transform hover:scale-105 transition duration-500">
+            <div class="glass-card p-6 rounded-2xl text-center transform hover:scale-105 transition duration-500">
                 <div class="text-4xl mb-4">🌟</div>
                 <h3 class="text-xl font-bold text-purple-400 mb-3">إلى حضورنا الكريم</h3>
-                <p class="text-gray-300 mb-4 leading-relaxed">
+                <p class="text-gray-300 mb-4 leading-relaxed text-sm">
                     حضوركم أضاء فعاليتنا وجعل من "رحلة ريادي" تجربة لا تُنسى. شكراً لكونكم جزءاً من هذا النجاح.
                 </p>
                 <hr class="border-gray-700 my-3">
                 <h3 class="text-lg font-bold text-purple-400 mb-2" dir="ltr">To Our Attendees</h3>
-                <p class="text-gray-400 text-sm leading-relaxed" dir="ltr">
+                <p class="text-gray-400 text-xs leading-relaxed" dir="ltr">
                     Your presence made "Ryadi's Journey" shine. Thank you for being part of this success.
                 </p>
             </div>
 
             <!-- Team/Volunteers Card -->
-            <div class="glass-card p-8 rounded-2xl text-center transform hover:scale-105 transition duration-500">
+            <div class="glass-card p-6 rounded-2xl text-center transform hover:scale-105 transition duration-500">
                 <div class="text-4xl mb-4">🤝</div>
                 <h3 class="text-xl font-bold text-indigo-400 mb-3">إلى شركاء النجاح</h3>
-                <p class="text-gray-300 mb-4 leading-relaxed">
+                <p class="text-gray-300 mb-4 leading-relaxed text-sm">
                     إلى المتطوعين والمنظمين: شغفكم وتفانيكم كانا الوقود الذي دفعنا للأمام. شكراً لجهودكم العظيمة.
                 </p>
                 <hr class="border-gray-700 my-3">
                 <h3 class="text-lg font-bold text-indigo-400 mb-2" dir="ltr">To Our Team</h3>
-                <p class="text-gray-400 text-sm leading-relaxed" dir="ltr">
+                <p class="text-gray-400 text-xs leading-relaxed" dir="ltr">
                     To our volunteers and organizers: Your passion was our fuel. Thank you for your incredible hard work.
                 </p>
+            </div>
+        </div>
+
+        <!-- Special Thanks Section (Vision 2030 & Gifted School) -->
+        <div class="mb-16">
+            <h3 class="text-2xl font-bold text-center text-purple-300 mb-8 relative inline-block w-full">
+                <span class="bg-gray-900 px-4 relative z-10">تقدير خاص | Special Thanks</span>
+                <div class="absolute top-1/2 left-0 w-full h-px bg-purple-800 -z-0"></div>
+            </h3>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Vision 2030 Club -->
+                <div class="glass-card p-6 rounded-xl border-r-4 border-green-500 flex flex-col items-center text-center md:items-start md:text-right">
+                    <div class="w-full flex justify-between items-start mb-4">
+                        <h4 class="text-xl font-bold text-white">نادي رؤية 2030 🇸🇦</h4>
+                        <span class="text-2xl">👁️</span>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed">
+                        كل الشكر والتقدير لكم. كانت مشاركتكم في <span class="text-purple-400 font-bold">#رحلة_ريادي</span> إضافة نوعية وملهمة، عكست الطموح والوعي بمستقبل وطننا. ممتنون لحضوركم ودعمكم! 🚀
+                    </p>
+                </div>
+
+                <!-- Gifted Students School -->
+                <div class="glass-card p-6 rounded-xl border-r-4 border-blue-500 flex flex-col items-center text-center md:items-start md:text-right">
+                    <div class="w-full flex justify-between items-start mb-4">
+                        <h4 class="text-xl font-bold text-white">مدرسة الموهوبين التقنية الثانوية بالدمام</h4>
+                        <span class="text-2xl">💡</span>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed">
+                        الموهبة تُبنى، والمستقبل يبدأ من هنا! شكر خاص لكم على حضوركم المشرف. سعدنا جداً بوجود هذه العقول الواعدة بيننا. كونوا دائماً مصدر إلهام! 🌟
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sponsors Section -->
+        <div class="mb-12">
+            <h3 class="text-2xl font-bold text-center text-purple-300 mb-8 relative inline-block w-full">
+                <span class="bg-gray-900 px-4 relative z-10">رعاتنا وداعمونا | Our Sponsors</span>
+                <div class="absolute top-1/2 left-0 w-full h-px bg-purple-800 -z-0"></div>
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
+                
+                <!-- Clay Cup -->
+                <a href="https://www.instagram.com/claycup.sa?igsh=MWpiZ3JqejJ0eXNobw==" target="_blank" class="sponsor-card group w-full max-w-xs bg-gray-800 rounded-xl p-6 flex flex-col items-center hover:bg-gray-700 transition border border-gray-700 hover:border-purple-500">
+                    <div class="w-24 h-24 rounded-full bg-gray-900 flex items-center justify-center mb-4 border-2 border-purple-500/30 group-hover:border-purple-500 overflow-hidden">
+                        <!-- Placeholder Logo matching theme -->
+                        <img src="https://placehold.co/100x100/2e1065/ffffff?text=Clay\nCup" alt="Clay Cup Logo" class="object-cover w-full h-full">
+                    </div>
+                    <h4 class="text-lg font-bold text-gray-200 group-hover:text-purple-400 transition">Clay Cup</h4>
+                    <span class="text-sm text-gray-500 mt-2 group-hover:text-gray-300 flex items-center gap-1">
+                        <span>تابعونا</span>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </span>
+                </a>
+
+                <!-- Moon Cookies -->
+                <a href="https://www.instagram.com/cookie.moon3?igsh=ZnQ5b3ByaWZ0dXQ1" target="_blank" class="sponsor-card group w-full max-w-xs bg-gray-800 rounded-xl p-6 flex flex-col items-center hover:bg-gray-700 transition border border-gray-700 hover:border-purple-500">
+                    <div class="w-24 h-24 rounded-full bg-gray-900 flex items-center justify-center mb-4 border-2 border-purple-500/30 group-hover:border-purple-500 overflow-hidden">
+                        <img src="https://placehold.co/100x100/2e1065/ffffff?text=Moon\nCookies" alt="Moon Cookies Logo" class="object-cover w-full h-full">
+                    </div>
+                    <h4 class="text-lg font-bold text-gray-200 group-hover:text-purple-400 transition">Moon Cookies</h4>
+                    <span class="text-sm text-gray-500 mt-2 group-hover:text-gray-300 flex items-center gap-1">
+                        <span>تابعونا</span>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </span>
+                </a>
+
+                <!-- Mum's Bakery -->
+                <a href="https://www.instagram.com/mumsbakery.ae?igsh=Mm1yYW9uNGFkM2I5" target="_blank" class="sponsor-card group w-full max-w-xs bg-gray-800 rounded-xl p-6 flex flex-col items-center hover:bg-gray-700 transition border border-gray-700 hover:border-purple-500">
+                    <div class="w-24 h-24 rounded-full bg-gray-900 flex items-center justify-center mb-4 border-2 border-purple-500/30 group-hover:border-purple-500 overflow-hidden">
+                        <img src="https://placehold.co/100x100/2e1065/ffffff?text=Mum's\nBakery" alt="Mum's Bakery Logo" class="object-cover w-full h-full">
+                    </div>
+                    <h4 class="text-lg font-bold text-gray-200 group-hover:text-purple-400 transition">Mum’s Bakery</h4>
+                    <span class="text-sm text-gray-500 mt-2 group-hover:text-gray-300 flex items-center gap-1">
+                        <span>تابعونا</span>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </span>
+                </a>
+
             </div>
         </div>
 
