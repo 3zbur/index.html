@@ -3,241 +3,317 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>رحلة ريادي</title>
+    <title>شكراً لكم - Thank You</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- 
-      التغييرات: 
-      1. تم تغيير نظام الألوان الأساسي من (Emerald/Stone/White) إلى (Indigo/Gray/Dark).
-      2. تم استبدال `bg-stone-50` بـ `bg-gray-900` للجسم.
-      3. تم استبدال `text-stone-*` بـ `text-gray-*` للنصوص.
-      4. تم استبدال `bg-white` بـ `bg-gray-800` للخلفيات.
-      5. تم استبدال لون التمييز `emerald` بـ `indigo` (والآن إلى `purple`).
-      6. بقيت ألوان (الأخضر/الأصفر/الأحمر) في الجافاسكريبت كما هي للحفاظ على فكرة "إشارة المرور" التفاعلية.
-      7. تم إضافة قسم جديد لـ "رابط الحضور" مع باركود (QR Code) ورابط.
-    --><style>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
         body {
             font-family: 'Tajawal', sans-serif;
+            background-color: #111827; /* gray-900 */
+            color: #e5e7eb; /* gray-200 */
+            overflow-x: hidden;
         }
-        .stage-card {
-            transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
-            transform-origin: center;
-            border-color: #374151; /* gray-700 default border */
+        #canvas-container {
+            width: 100%;
+            height: 400px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            /* Purple Sunset Gradient */
+            background: linear-gradient(to bottom, #1e1b4b 0%, #581c87 50%, #be185d 100%);
         }
-        .stage-card.active {
-            transform: scale(1.05);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        .glass-card {
+            background: rgba(31, 41, 55, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(75, 85, 99, 0.4);
         }
-        /* Style for the central road line */
-        .road-line {
-            background-color: #4b5563; /* gray-600 for road look */
-        }
-        /* Base dot style */
-        .road-dot {
-            height: 20px;
-            width: 20px;
-            border-radius: 50%;
-            z-index: 10;
-            transition: background-color 0.5s, transform 0.3s;
-        }
-        .road-dot:hover {
-            transform: scale(1.2);
+        .glow-text {
+            text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
         }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-200">
+<body class="min-h-screen flex flex-col">
 
-    <div class="container mx-auto max-w-6xl p-4 md:p-8">
+    <div class="container mx-auto max-w-4xl p-6 flex-grow z-10 relative">
 
-        <!-- Hero Section --><header class="text-center bg-gray-800 p-8 rounded-xl shadow-xl shadow-purple-500/10 mb-12 border-b-4 border-purple-500">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-purple-400 mb-4">🛣️ رحلة ريادي</h1>
-            <p class="text-2xl md:text-3xl font-light text-gray-300 mb-6">خطوات ثابتة: من الفكرة إلى السوق</p>
-            <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-8">
-                انضم إلينا في ملتقى متكامل يغطي جميع المراحل الحيوية لرحلة ريادة الأعمال، مصمم ليمكنك من تحويل فكرتك إلى مشروع ناجح.
-            </p>
-
-            <!-- Logistics --><div class="flex flex-col md:flex-row justify-center items-center gap-6 md:gap-10 text-lg">
-                <div class="flex items-center gap-2 text-purple-400">
-                    <span class="text-2xl">📅</span>
-                    <span class="font-semibold">الثلاثاء، ١٨ نوفمبر</span>
-                </div>
-                <div class="flex items-center gap-2 text-purple-400">
-                    <span class="text-2xl">🕒</span>
-                    <span class="font-semibold">٩:٠٠ صباحاً - ٤:٠٠ عصراً</span>
-                </div>
-                <div class="flex items-center gap-2 text-purple-400">
-                    <span class="text-2xl">📍</span>
-                    <span class="font-semibold">بهو الكلية A11</span>
-                </div>
-            </div>
+        <!-- Header -->
+        <header class="text-center mb-12 animate-fade-in-down">
+            <h1 class="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 mb-4 glow-text">
+                شكراً لكم
+            </h1>
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-400 tracking-widest uppercase">
+                Thank You
+            </h2>
         </header>
 
-        <!-- Interactive Road Map Section --><section class="my-12 relative">
-            <h2 class="text-3xl font-bold text-center text-purple-400 mb-4">مسار الانطلاق الريادي</h2>
-            <p class="text-center text-lg text-gray-300 mb-12 max-w-3xl mx-auto">
-                ابدأ رحلتك من هنا! انقر على المحطة التي تريد استكشافها، وستجد أن الألوان تتغير لترشدك إلى تقدمك في المسار.
-            </p>
-
-            <div id="road-container" class="relative w-full max-w-4xl mx-auto py-8">
-                <!-- The central road line (Hidden on mobile, visible on medium screens and up) --><div class="road-line absolute inset-y-0 right-1/2 w-2 transform translate-x-1/2 rounded hidden md:block"></div>
-                
-                <!-- Road Milestones will be injected here by JS --></div>
-        </section>
-
-        <!-- Location Section --><section class="my-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-xl mb-8 border-l-4 border-purple-500">
-                <h3 class="text-2xl font-bold text-purple-400 mb-4">كيف تصل إلينا؟</h3>
-                <div class="w-full h-64 bg-gray-700 rounded-lg flex flex-col items-center justify-center relative overflow-hidden border border-gray-600">
-                    <div class="text-6xl mb-4">📍</div>
-                    <div class="text-xl font-bold text-gray-100 mb-2">بهو الكلية A11</div>
-                    <p class="text-gray-400 mb-6">اضغط بالأسفل لعرض الموقع على خرائط جوجل</p>
-                    <a href="https://maps.app.goo.gl/kHinzreDT5V7q3FE6" target="_blank" rel="noopener noreferrer" class="bg-purple-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-purple-700 transition duration-300 shadow-md">
-                        افتح الخريطة 🗺️
-                    </a>
-                </div>
+        <!-- Messages Section -->
+        <div class="grid md:grid-cols-2 gap-6 mb-12">
+            
+            <!-- Attendees Card -->
+            <div class="glass-card p-8 rounded-2xl text-center transform hover:scale-105 transition duration-500">
+                <div class="text-4xl mb-4">🌟</div>
+                <h3 class="text-xl font-bold text-purple-400 mb-3">إلى حضورنا الكريم</h3>
+                <p class="text-gray-300 mb-4 leading-relaxed">
+                    حضوركم أضاء فعاليتنا وجعل من "رحلة ريادي" تجربة لا تُنسى. شكراً لكونكم جزءاً من هذا النجاح.
+                </p>
+                <hr class="border-gray-700 my-3">
+                <h3 class="text-lg font-bold text-purple-400 mb-2" dir="ltr">To Our Attendees</h3>
+                <p class="text-gray-400 text-sm leading-relaxed" dir="ltr">
+                    Your presence made "Ryadi's Journey" shine. Thank you for being part of this success.
+                </p>
             </div>
-        </section>
 
-        <!-- QR Code Section (UPDATED TITLE) --><section class="my-12">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-xl mb-8 border-t-4 border-purple-500 text-center">
-                <h3 class="text-2xl font-bold text-purple-400 mb-6">تذكرة الأختام</h3>
-                <div class="flex flex-col md:flex-row items-center justify-center gap-8">
-                    <!-- QR Code Image --><div class="w-48 h-48 p-3 bg-white rounded-lg shadow-inner flex items-center justify-center">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://q.passkit.net/~/#/p/quHo1Lk5kZJiw5" 
-                             alt="QR Code for event pass" 
-                             class="rounded-md"
-                             onerror="this.src='https://placehold.co/180x180/ffffff/374151?text=QR+Code'">
-                    </div>
-                    <!-- Text and Link --><div class="md:text-right">
-                        <p class="text-lg text-gray-300 mb-4">
-                            امسح الباركود أو اضغط على الرابط أدناه للحصول على تذكرتك.
-                        </p>
-                        <a href="https://q.passkit.net/~/#/p/quHo1Lk5kZJiw5" target="_blank" rel="noopener noreferrer" class="inline-block bg-purple-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-purple-700 transition duration-300 shadow-md break-all">
-                            q.passkit.net/~/#/p/quHo1Lk5kZJiw5
-                        </a>
-                    </div>
-                </div>
+            <!-- Team/Volunteers Card -->
+            <div class="glass-card p-8 rounded-2xl text-center transform hover:scale-105 transition duration-500">
+                <div class="text-4xl mb-4">🤝</div>
+                <h3 class="text-xl font-bold text-indigo-400 mb-3">إلى شركاء النجاح</h3>
+                <p class="text-gray-300 mb-4 leading-relaxed">
+                    إلى المتطوعين والمنظمين: شغفكم وتفانيكم كانا الوقود الذي دفعنا للأمام. شكراً لجهودكم العظيمة.
+                </p>
+                <hr class="border-gray-700 my-3">
+                <h3 class="text-lg font-bold text-indigo-400 mb-2" dir="ltr">To Our Team</h3>
+                <p class="text-gray-400 text-sm leading-relaxed" dir="ltr">
+                    To our volunteers and organizers: Your passion was our fuel. Thank you for your incredible hard work.
+                </p>
             </div>
-        </section>
+        </div>
 
+        <!-- Interactive Action -->
+        <div class="text-center mb-8">
+            <p class="text-gray-400 mb-4 text-sm">اضغط الزر أدناه للاحتفال وانطلاق الرحلة نحو المستقبل!</p>
+            <button id="celebrate-btn" class="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-200 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-600 hover:from-purple-500 hover:to-indigo-500 shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transform active:scale-95">
+                <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-900"></span>
+                <span class="relative text-xl flex items-center gap-3">
+                    <span>🚀</span>
+                    <span>احتفل بالنجاح</span>
+                    <span class="text-lg opacity-75 font-normal">| Celebrate Success</span>
+                </span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 3D Car Scene Container -->
+    <div class="w-full bg-gray-900 border-t border-gray-800 relative z-0">
+        <div id="canvas-container"></div>
+        <div class="absolute bottom-2 right-4 text-xs text-gray-600">Simulation powered by Three.js</div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const stageData = [
-                { id: 'identity', title: '١. الفكرة إلى الهوية', description: 'صياغة المفهوم الأساسي وبناء العلامة التجارية المميزة.', icon: '🧠' }, 
-                { id: 'prototyping', title: '٢. بناء النموذج الأولي', description: 'تحويل الرؤية إلى منتج ملموس وقابل للاختبار.', icon: '🔨' }, 
-                { id: 'funding', title: '٣. التمويل', description: 'استكشاف مصادر الدعم المالي واستراتيجيات جذب المستثمرين.', icon: '💰' }, 
-                { id: 'market-research', title: '٤. أبحاث السوق', description: 'فهم عميق لاحتياجات المستهلكين والمشهد التنافسي.', icon: '📊' }, 
-                { id: 'marketing', title: '٥. التسويق', description: 'تطوير خطط تسويقية فعالة للوصول إلى الجمهور المستهدف.', icon: '📣' }, 
-                { id: 'evaluation', title: '٦. التقييم', description: 'قياس الأداء وتحليل النتائج لضمان النمو المستدام.', icon: '⭐' }, 
-                { id: 'launching', title: '٧. الإطلاق', description: 'التنفيذ النهائي وإطلاق مشروعك بثقة في السوق.', icon: '🚀' }
-            ];
+        // --- 1. CONFETTI LOGIC ---
+        const btn = document.getElementById('celebrate-btn');
+        
+        function fireConfetti() {
+            const duration = 3000;
+            const end = Date.now() + duration;
 
-            const roadContainer = document.getElementById('road-container');
-
-            // 1. Function to handle stage click and update visual state
-            function showStage(el, index) {
-                // Define traffic light colors (Unchanged - this is the core logic)
-                const COLOR_GREEN = 'bg-green-600'; // Active/Completed
-                const COLOR_YELLOW = 'bg-yellow-500'; // Next Stage
-                const COLOR_RED = 'bg-red-600'; // Upcoming/Remaining
-                
-                // 1. Remove all color classes from all dots and reset cards
-                document.querySelectorAll('.road-dot').forEach((dot, i) => {
-                    dot.classList.remove(COLOR_GREEN, COLOR_YELLOW, COLOR_RED);
-                    // Reset border color on all cards to the new dark theme default
-                    document.querySelectorAll('.stage-card')[i].style.borderColor = '#374151'; // gray-700
-                    document.querySelectorAll('.stage-card')[i].classList.remove('active', 'ring-4', 'ring-green-600/50', 'shadow-2xl');
-                    document.querySelectorAll('.stage-card')[i].classList.add('shadow-lg');
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#a855f7', '#ec4899', '#6366f1']
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#a855f7', '#ec4899', '#6366f1']
                 });
 
-                // 2. Apply Traffic Light Logic (Green/Yellow/Red)
-                document.querySelectorAll('.road-dot').forEach((dot, i) => {
-                    if (i === index) {
-                        // Current stage: GREEN
-                        dot.classList.add(COLOR_GREEN);
-                        dot.style.transform = 'scale(1.2)';
-                        
-                        // Highlight current card
-                        const currentCard = document.querySelectorAll('.stage-card')[i];
-                        currentCard.classList.add('active', 'ring-4', 'ring-green-600/50', 'shadow-2xl');
-                        currentCard.classList.remove('shadow-lg');
-                        currentCard.style.borderColor = '#16a34a'; // green-600
-                        
-                    } else if (i === index + 1) {
-                        // Next stage: YELLOW
-                        dot.classList.add(COLOR_YELLOW);
-                        
-                        // Highlight next card lightly
-                        const nextCard = document.querySelectorAll('.stage-card')[i];
-                        nextCard.style.borderColor = '#f59e0b'; // yellow-500
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
 
-                    } else if (i > index + 1) {
-                        // Remaining stages: RED
-                        dot.classList.add(COLOR_RED);
+        // --- 2. THREE.JS 3D CAR SIMULATION ---
+        const container = document.getElementById('canvas-container');
 
-                        // Outline remaining cards
-                        const remainingCard = document.querySelectorAll('.stage-card')[i];
-                        remainingCard.style.borderColor = '#dc2626'; // red-600
+        // Scene Setup
+        const scene = new THREE.Scene();
+        // scene.background is null so CSS gradient shows through
+        // Fog color matches the bottom of the CSS gradient (pinkish-red)
+        scene.fog = new THREE.Fog('#be185d', 20, 60);
 
-                    } else {
-                        // Previous stages (already completed relative to the active click)
-                        dot.classList.add(COLOR_GREEN);
+        const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
+        camera.position.set(0, 3, 8);
+        camera.lookAt(0, 0, -5);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.shadowMap.enabled = true;
+        container.appendChild(renderer.domElement);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffd1dc, 0.8); // Warm light
+        dirLight.position.set(10, 20, 10);
+        dirLight.castShadow = true;
+        scene.add(dirLight);
+
+        // --- Build the Car (Low Poly) ---
+        const carGroup = new THREE.Group();
+
+        // 1. Chassis (Purple body)
+        const chassisGeo = new THREE.BoxGeometry(2, 0.5, 4);
+        const chassisMat = new THREE.MeshPhongMaterial({ color: 0x8b5cf6 }); // Tailwind Purple-500
+        const chassis = new THREE.Mesh(chassisGeo, chassisMat);
+        chassis.position.y = 0.5;
+        chassis.castShadow = true;
+        carGroup.add(chassis);
+
+        // 2. Cabin (Dark Glass)
+        const cabinGeo = new THREE.BoxGeometry(1.8, 0.6, 2.5);
+        const cabinMat = new THREE.MeshPhongMaterial({ color: 0x1f2937 }); // Gray-800
+        const cabin = new THREE.Mesh(cabinGeo, cabinMat);
+        cabin.position.y = 1.0;
+        cabin.position.z = -0.2;
+        cabin.castShadow = true;
+        carGroup.add(cabin);
+
+        // 3. Wheels function
+        function createWheel(x, z) {
+            const wheelGeo = new THREE.CylinderGeometry(0.4, 0.4, 0.3, 24);
+            const wheelMat = new THREE.MeshLambertMaterial({ color: 0x111111 });
+            const wheel = new THREE.Mesh(wheelGeo, wheelMat);
+            wheel.rotation.z = Math.PI / 2;
+            wheel.position.set(x, 0.4, z);
+            wheel.castShadow = true;
+            return wheel;
+        }
+
+        const wheels = [];
+        wheels.push(createWheel(1, 1.2));
+        wheels.push(createWheel(-1, 1.2));
+        wheels.push(createWheel(1, -1.2));
+        wheels.push(createWheel(-1, -1.2));
+        wheels.forEach(w => carGroup.add(w));
+
+        // 4. Tail lights (Red Glow)
+        const tailLightGeo = new THREE.BoxGeometry(0.4, 0.1, 0.1);
+        const tailLightMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+        const tl1 = new THREE.Mesh(tailLightGeo, tailLightMat);
+        tl1.position.set(0.6, 0.6, 2);
+        const tl2 = new THREE.Mesh(tailLightGeo, tailLightMat);
+        tl2.position.set(-0.6, 0.6, 2);
+        carGroup.add(tl1);
+        carGroup.add(tl2);
+
+        // Add Car to Scene
+        scene.add(carGroup);
+
+        // --- The Road (Infinite scrolling effect) ---
+        const roadGeo = new THREE.PlaneGeometry(20, 200);
+        // Road color slightly purple to reflect sky
+        const roadMat = new THREE.MeshPhongMaterial({ color: 0x2e1065 }); 
+        const road = new THREE.Mesh(roadGeo, roadMat);
+        road.rotation.x = -Math.PI / 2;
+        road.position.y = 0;
+        road.position.z = -50;
+        road.receiveShadow = true;
+        scene.add(road);
+
+        // Road Stripes
+        const stripeGeo = new THREE.PlaneGeometry(0.5, 4);
+        const stripeMat = new THREE.MeshBasicMaterial({ color: 0xffa500 }); // Orange stripes for sunset vibe
+        const stripes = [];
+        
+        // Generate pool of stripes
+        for(let i=0; i<20; i++) {
+            const stripe = new THREE.Mesh(stripeGeo, stripeMat);
+            stripe.rotation.x = -Math.PI / 2;
+            stripe.position.y = 0.02; // Just above road
+            stripe.position.z = 10 - (i * 10);
+            scene.add(stripe);
+            stripes.push(stripe);
+        }
+
+        // --- Animation Variables ---
+        let speed = 0.2; // Initial slow driving speed
+        let isZooming = false;
+        let carVelocityZ = 0;
+        
+        // --- Animation Loop ---
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (!isZooming) {
+                // 1. IDLE STATE: Car stays, road moves
+                
+                // Move stripes backward to simulate forward motion
+                stripes.forEach(stripe => {
+                    stripe.position.z += speed;
+                    if(stripe.position.z > 15) {
+                        stripe.position.z = -100; // Reset far ahead
                     }
                 });
-            }
 
-            // 2. Create Road Map Milestones
-            stageData.forEach((stage, index) => {
-                const isOdd = index % 2 !== 0; 
+                // Subtle car bounce
+                carGroup.position.y = 0.05 + Math.sin(Date.now() * 0.005) * 0.02;
                 
-                const stageEl = document.createElement('div');
-                stageEl.className = `stage-milestone mb-12 flex relative items-center ${isOdd ? 'justify-start md:justify-start' : 'justify-end'} ${isOdd ? 'odd' : 'even'}`;
-
-                // Milestone Card (The actual content box) - UPDATED with bg-gray-800
-                const card = document.createElement('div');
-                card.className = `stage-card w-full md:w-5/12 p-5 rounded-xl bg-gray-800 shadow-lg transition-all duration-300 transform cursor-pointer border-t-4`;
+            } else {
+                // 2. ZOOM STATE: Car actually moves forward rapidly
                 
-                // Content inside the card - UPDATED with dark theme text colors
-                card.innerHTML = `
-                    <div class="flex items-center gap-3 mb-2">
-                        <span class="text-3xl">${stage.icon}</span>
-                        <h3 class="text-xl font-bold text-gray-100">${stage.title}</h3>
-                    </div>
-                    <p class="text-base text-gray-300">${stage.description}</p>
-                `;
+                carVelocityZ += 0.05; // Acceleration
+                carGroup.position.z -= carVelocityZ;
+                
+                // Removed camera shake to make it "stable" as requested
+                // camera.position.x = ... 
+                // camera.position.y = ...
 
-                // Timeline circle (dot on the road, visible only on medium screens and up)
-                const dot = document.createElement('div');
-                dot.className = `road-dot absolute z-10 hidden md:block ${isOdd ? 'left-1/2 -translate-x-1/2' : 'right-1/2 translate-x-1/2'} transition-all duration-300`;
+                // Streaks effect (accelerate stripes incredibly fast)
+                stripes.forEach(stripe => {
+                    stripe.position.z += speed * 5; 
+                    if(stripe.position.z > 20) stripe.position.z = -100;
+                });
 
-                // Structure the elements for the left/right layout on desktop
-                if (!isOdd) { // Left side (Even index 0, 2, 4, 6)
-                    stageEl.classList.add('md:justify-end'); 
-                    stageEl.appendChild(card);
-                    stageEl.appendChild(dot);
-                } else { // Right side (Odd index 1, 3, 5)
-                    stageEl.classList.add('md:justify-start'); 
-                    stageEl.appendChild(dot);
-                    stageEl.appendChild(card);
+                // Hide car if too far
+                if (carGroup.position.z < -100) {
+                    carGroup.visible = false;
                 }
-
-                // Event Listener for interaction
-                card.addEventListener('click', (e) => showStage(e.currentTarget, index));
-
-                roadContainer.appendChild(stageEl);
-            });
-
-            // 3. Show initial stage (select the first card, representing the starting point)
-            const initialCard = roadContainer.querySelector('.stage-card');
-            if (initialCard) {
-                showStage(initialCard, 0);
             }
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // --- Event Listener ---
+        btn.addEventListener('click', () => {
+            if(isZooming) return; // Prevent double click
+            
+            // 1. Trigger Confetti
+            fireConfetti();
+            
+            // 2. Change Button Text
+            btn.innerHTML = '<span class="text-xl">🏎️💨</span> <span class="ml-2">انطلقنا! / Zoom!</span>';
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            // 3. Trigger Car Zoom Logic
+            setTimeout(() => {
+                isZooming = true;
+                speed = 2.0; // Visual speed of road lines increases
+            }, 500); // Slight delay for anticipation
         });
+
+        // Resize handler
+        window.addEventListener('resize', () => {
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            renderer.setSize(width, height);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+        });
+
     </script>
 </body>
 </html>
-
